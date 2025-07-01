@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulasi Harga Upload Akulaku</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      padding: 40px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 5px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .riwayat-container {
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    th {
+      background-color: #333;
+      color: white;
+    }
+    .clear-btn {
+      background-color: #d9534f;
+      margin-top: 10px;
+    }
+    .clear-btn:hover {
+      background-color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Simulasi Harga Upload Akulaku</h2>
+
+  <label for="shopee">Harga Shopee</label>
+  <input type="number" id="shopee" placeholder="Contoh: 100000">
+
+  <label for="laba">Laba yang Diinginkan</label>
+  <input type="number" id="laba" placeholder="Contoh: 30000">
+
+  <label for="diskon">Pilih Diskon (%)</label>
+  <select id="diskon">
+    <option value="10">10%</option>
+    <option value="20">20%</option>
+    <option value="30">30%</option>
+    <option value="40">40%</option>
+    <option value="50" selected>50%</option>
+    <option value="60">60%</option>
+    <option value="70">70%</option>
+  </select>
+
+  <button onclick="hitungHarga()">Hitung Harga</button>
+
+  <div class="riwayat-container" id="riwayatContainer" style="display:none;">
+    <h3>Riwayat Perhitungan</h3>
+    <table id="riwayatTable">
+      <thead>
+        <tr>
+          <th>Harga Shopee</th>
+          <th>Laba</th>
+          <th>Diskon</th>
+          <th>Harga Upload</th>
+          <th>Harga Promo</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <button class="clear-btn" onclick="hapusRiwayat()">Hapus Riwayat</button>
+  </div>
+</div>
+
+<script>
+  function hitungHarga() {
+    const shopee = parseFloat(document.getElementById("shopee").value);
+    const laba = parseFloat(document.getElementById("laba").value);
+    const diskonPersen = parseInt(document.getElementById("diskon").value);
+
+    if (!shopee || shopee <= 0 || !laba || laba < 0) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Input tidak valid!',
+        text: 'Mohon isi harga Shopee dan laba dengan benar.',
+      });
+      return;
+    }
+
+    const hargaDasar = shopee + laba;
+    const hargaUpload = hargaDasar * 2;
+    const hargaPromo = hargaUpload * ((100 - diskonPersen) / 100);
+
+    // Tampilkan hasil di SweetAlert
+    Swal.fire({
+      title: 'Hasil Perhitungan',
+      html: `
+        <b>Harga Upload:</b> Rp ${Math.round(hargaUpload).toLocaleString('id-ID')}<br>
+        <b>Diskon:</b> ${diskonPersen}%<br>
+        <b>Harga Promo:</b> Rp ${Math.round(hargaPromo).toLocaleString('id-ID')}<br>
+        <b>Laba Bersih:</b> Rp ${Math.round(laba).toLocaleString('id-ID')}
+      `,
+      icon: 'success',
+      confirmButtonText: 'Oke',
+    });
+
+    // Tampilkan tabel riwayat
+    document.getElementById("riwayatContainer").style.display = "block";
+
+    // Tambahkan baris ke riwayat
+    const tbody = document.querySelector("#riwayatTable tbody");
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>Rp ${Math.round(shopee).toLocaleString('id-ID')}</td>
+      <td>Rp ${Math.round(laba).toLocaleString('id-ID')}</td>
+      <td>${diskonPersen}%</td>
+      <td>Rp ${Math.round(hargaUpload).toLocaleString('id-ID')}</td>
+      <td>Rp ${Math.round(hargaPromo).toLocaleString('id-ID')}</td>
+    `;
+    tbody.appendChild(row);
+  }
+
+  function hapusRiwayat() {
+    const tbody = document.querySelector("#riwayatTable tbody");
+    tbody.innerHTML = "";
+    document.getElementById("riwayatContainer").style.display = "none";
+  }
+</script>
+
+</body>
+</html>
