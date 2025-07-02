@@ -136,9 +136,10 @@
       return;
     }
 
+    const diskon = diskonPersen / 100;
     const hargaDasar = shopee + laba;
-    const hargaUpload = hargaDasar * 2;
-    const hargaPromo = hargaUpload * ((100 - diskonPersen) / 100);
+    const hargaUpload = hargaDasar / (1 - diskon);
+    const hargaPromo = hargaUpload * (1 - diskon);
 
     // Tampilkan hasil di SweetAlert
     Swal.fire({
