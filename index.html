@@ -111,7 +111,6 @@
       <button class="resi-btn" onclick="showSection('resi')">📦 Generator 50 Nomor Resi</button>
     </div>
 
-    <!-- Bagian Generator Resi -->
     <div id="resi" class="section">
       <h2>Generator 50 Nomor Resi SiCepat (12 Digit)</h2>
       <label>Awalan 6 digit (Contoh: 004469)</label>
@@ -120,7 +119,6 @@
       <textarea id="output" readonly placeholder="Hasil nomor resi akan muncul di sini..."></textarea>
     </div>
 
-    <!-- Bagian Kalkulator Markup -->
     <div id="markup" class="section">
       <h2>Simulasi Harga Upload Akulaku</h2>
       <label>Harga Shopee</label>
@@ -139,6 +137,7 @@
               <th>Laba</th>
               <th>Diskon</th>
               <th>Harga Upload</th>
+              <th>Harga Promo</th>
             </tr>
           </thead>
           <tbody></tbody>
@@ -147,7 +146,6 @@
       </div>
     </div>
 
-    <!-- Bagian Kompres Gambar -->
     <div id="kompres" class="section">
       <h2>Kompres & Pertajam Gambar</h2>
       <input type="file" id="upload" accept="image/*">
@@ -197,6 +195,7 @@
       const diskon = diskonPersen / 100;
       const hargaDasar = shopee + laba;
       const hargaUpload = hargaDasar / (1 - diskon);
+      const hargaOrimi = hargaUpload - laba;
       Swal.fire({
         title: 'Hasil Perhitungan',
         html: `Harga Upload: <b>Rp ${Math.round(hargaUpload).toLocaleString('id-ID')}</b><br>
@@ -209,8 +208,9 @@
         <td>Rp ${Math.round(shopee).toLocaleString('id-ID')}</td>
         <td>Rp ${Math.round(laba).toLocaleString('id-ID')}</td>
         <td>${diskonPersen}%</td>
-        <td>Rp ${Math.round(hargaUpload).toLocaleString('id-ID')}</td>`;
-      tbody.prepend(tr);
+        <td>Rp ${Math.round(hargaUpload).toLocaleString('id-ID')}</td>
+        <td>Rp ${Math.round(hargaOrimi).toLocaleString('id-ID')}</td>`;
+      tbody.appendChild(tr);
       document.getElementById("hapusRiwayat").style.display = "inline-block";
     }
 
